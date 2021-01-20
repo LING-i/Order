@@ -1,0 +1,21 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: 123456
+    url: jdbc:mysql://192.168.56.101:3306/sell?characterEncoding=utf8&serverTimezone=UTC&useUnicode=true
+  jpa:
+    show-sql: true  #打印SQL语句
+
+
+
+logging:
+  pattern:
+    console: "%d - %msg%n"  #日志输出的格式   %d日期  %msg日志信息  %n换行
+  file:
+    path: D:\Javaprojects\sellLog\     #配置文件的输出位置
+  level:
+    root: info          #全局
+    #com.imooc.logTest: error   #在指定包的生效级别
+
+
