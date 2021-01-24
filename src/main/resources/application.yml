@@ -6,7 +6,9 @@ spring:
     url: jdbc:mysql://192.168.56.101:3306/sell?characterEncoding=utf8&serverTimezone=UTC&useUnicode=true
   jpa:
     show-sql: true  #打印SQL语句
-
+    #如果为null就不显示
+  jackson:
+   default-property-inclusion: non_null
 #项目的访问路径
 server:
   servlet:
@@ -21,5 +23,6 @@ logging:
   level:
     root: info          #全局
     #com.imooc.logTest: error   #在指定包的生效级别
+
 
 

@@ -82,8 +82,8 @@ public class OrderServiceImpl implements OrderService {
 
         //3. 写入订单数据库（orderMaster）
         OrderMaster orderMaster = new OrderMaster();
+        orderDTO.setOrderId(orderId);
         BeanUtils.copyProperties(orderDTO,orderMaster);//orderMaster也会被orderDTO中的null值覆盖
-        orderMaster.setOrderId(orderId);
         orderMaster.setOrderAmount(orderAmount);
         //copyProperties中将orderMaster的OrderStatus和PayStatus覆盖 为 null
         orderMaster.setOrderStatus(OrderStatusEnum.NEW.getCode());
