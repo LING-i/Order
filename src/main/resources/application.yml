@@ -9,10 +9,24 @@ spring:
     #如果为null就不显示
   jackson:
    default-property-inclusion: non_null
-#项目的访问路径
+
+  freemarker:
+    template-loader-path: classpath:/templates/  # classpath:  一定不能漏写
+    cache: false
+    charset: UTF-8
+    check-template-location: true
+    content-type: text/html
+    expose-request-attributes: false
+    expose-session-attributes: false
+    request-context-attribute: req
+    suffix: .ftl
+
+
 server:
   servlet:
     context-path: /sell
+
+
 
 
 logging:
@@ -23,6 +37,18 @@ logging:
   level:
     root: info          #全局
     #com.imooc.logTest: error   #在指定包的生效级别
+
+
+#mpAppId: wx297ad305157e338b
+  #  mpAppSecret: 00fde467df048493dc1739b4cf1ca2fb
+
+wechat:
+  mpAppId: wxd898fcb01713c658
+  mpAppSecret: 00fde467df048493dc1739b4cf1ca2fb
+  mchId: 1483469312
+  mchKey: 098F6BCD4621D373CADE4E832627B4F6
+  keyPath: D:\Javaprojects\sell\var\h5.p12
+  notifyUrl: http://lzxstudy.natapp1.cc/sell/pay/notify
 
 
 

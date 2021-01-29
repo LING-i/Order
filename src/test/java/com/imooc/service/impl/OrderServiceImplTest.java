@@ -93,4 +93,14 @@ class OrderServiceImplTest {
         OrderDTO result = orderService.paid(orderDTO);
         Assert.assertEquals(PayStatusEnum.SUCCESS.getCode(),result.getPayStatus());
     }
+
+    @Test
+    void list(){
+
+        PageRequest request = PageRequest.of(0,2);//构建页面
+        Page<OrderDTO> orderDTOPage = orderService.findList(request);
+
+        Assert.assertEquals(0,orderDTOPage.getTotalElements());
+    }
+
 }

@@ -14,6 +14,7 @@ import com.imooc.repository.OrderDetailRepository;
 import com.imooc.repository.OrderMasterRepository;
 import com.imooc.repository.ProductInfoRepository;
 import com.imooc.service.OrderService;
+import com.imooc.service.PayService;
 import com.imooc.service.ProductService;
 import com.imooc.utils.KeyUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -46,6 +47,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private ProductService productService;
+
+    @Autowired
+    private PayService payService;
 
 
     /**
@@ -159,6 +163,7 @@ public class OrderServiceImpl implements OrderService {
         //4.如果已支付，需要退款
         if(orderDTO.getPayStatus().equals(PayStatusEnum.SUCCESS.getCode())){
             //TODO
+            payService.refund(orderDTO);//退款
         }
 
         return orderDTO;
@@ -211,6 +216,16 @@ public class OrderServiceImpl implements OrderService {
         return orderDTO;
     }
 
+    @Override
+    public Page<OrderDTO> findList(Pageable pageable)
+    {
+
+        Page<OrderMaster> masterPage = orderMasterRepository.findAll(pageable);
+        //将MasterPage 转化为 OrderDTO
+        List<OrderDTO> orderDTOList = OrderMaster2OrderDTOConverter.convert(masterPage.getContent());
+
+        return new PageImpl<OrderDTO>(orderDTOList,pageable,masterPage.getTotalElements());
+    }
 
 
 }
