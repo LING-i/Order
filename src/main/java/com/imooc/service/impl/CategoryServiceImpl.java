@@ -25,6 +25,8 @@ public class CategoryServiceImpl implements CategoryService {
         return categoryRepository.findAll();
     }
 
+
+
     @Override
     public List<ProductCategory> findByCategoryTypeIn(List<Integer> categoryTypeList) {
         return categoryRepository.findByCategoryTypeIn(categoryTypeList);

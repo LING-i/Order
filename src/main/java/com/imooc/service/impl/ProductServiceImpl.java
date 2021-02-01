@@ -7,6 +7,7 @@ import com.imooc.enums.ResultEnum;
 import com.imooc.exception.SellException;
 import com.imooc.repository.ProductInfoRepository;
 import com.imooc.service.ProductService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,6 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Slf4j
 public class ProductServiceImpl implements ProductService {
 
     @Autowired
@@ -81,5 +83,43 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
+
+    @Override
+    public ProductInfo onSale(String productId) {
+        //根据id查询ProductInfo
+        Optional<ProductInfo> infoOptional = infoRepository.findById(productId);
+        ProductInfo productInfo = infoOptional.orElse(null);
+        if(productInfo == null){
+            log.error("【更新商品信息】 商品不存在 productId={}",productId);
+            throw  new SellException(ResultEnum.PRODUCT_NOT_EXIST);//抛出商品不存在异常
+        }
+        if(productInfo.getProductStatusEnum().getCode() == ProductStatusEnum.UP.getCode()){
+            log.error("【更新商品信息】 商品已是 = {}",productInfo.getProductStatusEnum().getMessage());
+            throw new SellException(ResultEnum.PRODUCT_STATUS_ERROR);
+        }
+        //修改ProductInfo的状态
+        productInfo.setProductStatus(ProductStatusEnum.UP.getCode());
+        //保存product
+        return  infoRepository.save(productInfo);
+    }
+
+    @Override
+    public ProductInfo offSale(String productId) {
+        //根据id查询ProductInfo
+        Optional<ProductInfo> infoOptional = infoRepository.findById(productId);
+        ProductInfo productInfo = infoOptional.orElse(null);
+        if(productInfo == null){
+            log.error("【更新商品信息】 商品不存在 productId={}",productId);
+            throw  new SellException(ResultEnum.PRODUCT_NOT_EXIST);//抛出商品不存在异常
+        }
+        if(productInfo.getProductStatusEnum().getCode() == ProductStatusEnum.DOWN.getCode()){
+            log.error("【更新商品信息】 商品已是 = {}",productInfo.getProductStatusEnum().getMessage());
+            throw new SellException(ResultEnum.PRODUCT_STATUS_ERROR);
+        }
+        //修改ProductInfo的状态
+        productInfo.setProductStatus(ProductStatusEnum.DOWN.getCode());
+        //保存product
+        return   infoRepository.save(productInfo);
+    }
 
 }
