@@ -4,11 +4,13 @@ import com.imooc.dto.OrderDTO;
 import com.imooc.enums.ResultEnum;
 import com.imooc.exception.SellException;
 import com.imooc.service.OrderService;
+import com.imooc.service.PushMessageService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,6 +30,7 @@ public class SellerOrderController {
 
     @Autowired
     private OrderService orderService;
+
 
     /**
      * 分页查询所有订单
@@ -102,6 +105,7 @@ public class SellerOrderController {
      * 完结订单
      */
     @RequestMapping("/finish")
+    @Transactional
     public ModelAndView finish(@RequestParam("orderId") String orderId,
                                Map<String,Object> map){
 
@@ -118,6 +122,7 @@ public class SellerOrderController {
 
         map.put("msg", ResultEnum.ORDER_FINISH_SUCCESS.getMessage());
         map.put("url","/sell/seller/order/list");//成功提示后跳转的页面
+
 
         return new ModelAndView("common/success",map);
     }

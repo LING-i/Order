@@ -13,9 +13,7 @@ import com.imooc.exception.SellException;
 import com.imooc.repository.OrderDetailRepository;
 import com.imooc.repository.OrderMasterRepository;
 import com.imooc.repository.ProductInfoRepository;
-import com.imooc.service.OrderService;
-import com.imooc.service.PayService;
-import com.imooc.service.ProductService;
+import com.imooc.service.*;
 import com.imooc.utils.KeyUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -50,6 +48,12 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private PayService payService;
+
+    @Autowired
+    private PushMessageService pushMessageService;
+
+    @Autowired
+    private WebSocket webSocket;
 
 
     /**
@@ -100,6 +104,8 @@ public class OrderServiceImpl implements OrderService {
 
         //减库存
         productService.decreaseStock(cartDTOList);
+
+        webSocket.sendMessage(orderDTO.getOrderId());
 
         return orderDTO;
     }
@@ -187,6 +193,15 @@ public class OrderServiceImpl implements OrderService {
                 log.error("【完结订单】 更新失败，orderMaster = {}",orderMaster );
                 throw  new SellException(ResultEnum.ORDER_UPDATE_FAIL);
         }
+
+
+        /**
+         *    完结订单前，发送微信模板消息给用户
+         *    消息只是try-catch   因为设置了回滚，若推送消息抛出异常，那么完结订单就会失败。
+         *    但其实消息推送来说并不是那么重要，不应该对完结订单的结果发生改变
+         */
+
+        pushMessageService.orderStatus(orderDTO);
 
         return orderDTO;
     }

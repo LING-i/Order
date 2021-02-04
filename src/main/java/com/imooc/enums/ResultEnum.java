@@ -26,6 +26,9 @@ public enum ResultEnum {
     PRODUCT_ONSALE_FAIL(26,"商品上架失败"),
     PRODUCT_OFFSALE_SUCCESS(27,"商品下架成功"),
     PRODUCT_OFFSALE_FAIL(28,"商品下架失败"),
+    WECHAT_OPEN_ERROR(29,"微信开放平台方面错误"),
+    LOGIN_FAIL(30,"登录失败，登录信息不正确"),
+    LOGIN_SUCCESS(31,"登录成功")
     ;
 
     private Integer code;

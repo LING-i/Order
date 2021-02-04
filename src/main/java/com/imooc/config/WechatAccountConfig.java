@@ -7,6 +7,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 import javax.net.ssl.SSLContext;
+import java.util.Map;
 
 @Data
 @Component
@@ -14,10 +15,17 @@ import javax.net.ssl.SSLContext;
 //@PropertySource(value = "classPath:wechat.yml")
 public class WechatAccountConfig {
 
+        /**公众平台Id*/
         private String mpAppId;
 
+        /**公众平台密钥*/
         private String mpAppSecret;
 
+        /**开放平台Id*/
+        private String openAppId;
+
+        /**开放平台密钥*/
+        private String openAppSecret;
 
         /**
          * 商户号
@@ -43,5 +51,8 @@ public class WechatAccountConfig {
          * 异步URl
          */
         private String notifyUrl;
+
+
+        private Map<String,String> templateId;
 
 }
